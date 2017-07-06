@@ -1,0 +1,22 @@
+version: '2'
+services:
+  vault: 
+    container_name: vault
+    build: ./vault
+    links:
+      - sqlserver:sqlserver
+    ports:
+      - 8200:8200
+    environment:
+      VAULT_ADDR: http://localhost:8200
+    volumes:
+     - /c/Users/trond/Documents/projects/vault-dev:/vaultdev #you probably have to adjust this
+  sqlserver:
+    container_name: sqlserver
+    image: microsoft/mssql-server-linux
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: MyPassword123
+    ports:
+      - 1433:1433
+    
