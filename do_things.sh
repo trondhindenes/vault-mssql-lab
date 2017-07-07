@@ -1,5 +1,5 @@
 #create a db
-docker exec vaultdev_sqlserver_1 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P MyPassword123 -Q "CREATE database testdb"
+docker exec sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P MyPassword123 -Q "CREATE database testdb"
 
 
 
@@ -32,12 +32,11 @@ vault read database/creds/testdb_fullaccess
 
 #Enable the approle auth backend:
 vault auth-enable approle
-vault write auth/approle/role/testdb_readaccess role_id=test secret_id_ttl=10m token_num_uses=10 token_ttl=20m token_max_ttl=30m secret_id_num_uses=40 policies=testdb_readaccess
-vault read auth/approle/role/testdb_readaccess/role-id
+vault write auth/approle/role/testdb_readaccess role_id=test policies=testdb_readaccess secret_id_ttl=0 token_num_uses=0
 
 #Get a secretId
 vault write -f auth/approle/role/testdb_readaccess/secret-id
 
 #Login as the app role
-vault write auth/approle/login role_id=test secret_id=a5f36495-aa4e-72f4-3364-d22979070f77
+vault write auth/approle/login role_id=test secret_id=3f966c0f-c153-8d93-62b0-162044fc3779
 vault auth 

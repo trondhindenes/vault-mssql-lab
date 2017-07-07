@@ -19,4 +19,14 @@ services:
       SA_PASSWORD: MyPassword123
     ports:
       - 1433:1433
-    
+  app: 
+    container_name: app
+    build: ./app
+    links:
+      - vault:vault
+      - sqlserver:sqlserver
+    environment:
+      ROLE_ID: test
+      SECRET_ID: 9b10b201-8aaa-dfb8-6dda-e7d9af1f3d19
+      VAULT_URL: http://vault:8200
+      SQL_SERVER_ADDR: sqlserver
